@@ -22,14 +22,11 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.icstech.cstv.R
-import com.icstech.cstv.data.Match
-import com.icstech.cstv.data.MatchItem
-import com.icstech.cstv.ui.home.CardMatch
 import com.icstech.cstv.ui.home.HomeViewModel
+import com.icstech.cstv.ui.home.MainScreen
 import com.icstech.cstv.util.theme.CSTVTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,7 +45,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun MountList(
     viewModel: HomeViewModel
@@ -56,6 +52,7 @@ fun MountList(
     val matches by viewModel.matches.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
+
         viewModel.fetchMatches()
     }
 
@@ -64,7 +61,7 @@ fun MountList(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         items(matches) { data ->
-            CardMatch(data = data)
+            MainScreen(data = data)
         }
     }
 }
@@ -76,7 +73,6 @@ fun Greeting(viewModel: HomeViewModel) {
                 text = stringResource(R.string.matches),
                 fontSize = 32.sp,
                 color = Color.White,
-
             )
         }
         Row {

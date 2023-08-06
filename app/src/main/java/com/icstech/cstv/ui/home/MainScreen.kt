@@ -17,16 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.icstech.cstv.data.MatchItem
 import com.icstech.cstv.util.theme.DarkBlue2
 
-
 @Composable
-fun CardMatch(
+fun MainScreen(
     data: MatchItem,
 ) {
+    val context = LocalContext.current
     Card(
         modifier = Modifier
             .height(176.dp)
@@ -82,3 +83,4 @@ fun CardMatch(
         }
     }
 }
+
