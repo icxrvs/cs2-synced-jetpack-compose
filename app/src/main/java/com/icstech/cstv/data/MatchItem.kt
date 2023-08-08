@@ -16,7 +16,7 @@ data class MatchItem(
     val modified_at: String,
     val name: String,
     val number_of_games: Int,
-    val opponents: List<Opponent>,
+    val opponents: List<Opponent>?,
     val original_scheduled_at: String,
     val rescheduled: Boolean,
     val results: List<Result>,

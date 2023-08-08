@@ -1,6 +1,6 @@
 package com.icstech.cstv.data.repository
 
-import com.icstech.cstv.BuildConfig
+import com.icstech.cstv.BuildConfig.BEARER_TOKEN
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private const val BASE_URL = "https://api.pandascore.co"
 
-    val token = BuildConfig.BEARER_TOKEN
+    private const val token = BEARER_TOKEN
 
     private val interceptor = Interceptor { chain ->
         val newRequest = chain.request().newBuilder()

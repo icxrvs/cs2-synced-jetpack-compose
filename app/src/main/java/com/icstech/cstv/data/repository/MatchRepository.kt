@@ -4,10 +4,12 @@ package com.icstech.cstv.data.repository
 import com.icstech.cstv.data.MatchItem
 
 class MatchRepository {
-    private val creditCardService = RetrofitInstance.matchService
+    private val matchService = RetrofitInstance.matchService
+    suspend fun getMatches(): List<MatchItem> {
+        return matchService.getMatches()
+    }
 
-
-    suspend fun getCreditCards(): List<MatchItem> {
-        return creditCardService.getMatches()
+    suspend fun getMatch(matchId: String?): MatchItem{
+        return matchService.getMatch(matchId = matchId)
     }
 }
