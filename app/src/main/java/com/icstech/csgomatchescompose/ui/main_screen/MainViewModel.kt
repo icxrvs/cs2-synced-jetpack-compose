@@ -15,11 +15,11 @@ class MainViewModel : ViewModel() {
     val matches: LiveData<List<MatchItem>> = _matches
     val isLoading = MutableLiveData(false)
 
-    fun fetchMatches() {
+    fun fetchMatches(currentDate: String) {
         isLoading.value = true
         viewModelScope.launch {
             try {
-                val matches = repository.getMatches()
+                val matches = repository.getMatches(currentDate)
                 _matches.value = matches.filter { it.opponents?.isNotEmpty() == true && it.videogame.id == 3}.sortedBy { it.begin_at }.sortedByDescending { it.status }
                 isLoading.value = false
             } catch (e: Exception) {

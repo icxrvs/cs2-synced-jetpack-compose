@@ -6,8 +6,8 @@ import com.icstech.csgomatchescompose.data.OpponentXX
 
 class MatchRepository {
     private val matchService = RetrofitInstance.matchService
-    suspend fun getMatches(): List<MatchItem> {
-        return matchService.getMatches()
+    suspend fun getMatches(currentDate: String): List<MatchItem> {
+        return matchService.getMatches(currentDate)
     }
     suspend fun getMatchDetails(matchId: String?): MatchItem{
         return matchService.getMatchDetails(matchId = matchId)

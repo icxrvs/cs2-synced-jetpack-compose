@@ -69,7 +69,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
                 when (tabIndex) {
                     0 -> fetchMatches(viewModel, getCurrentDate(isYesterdaySelected = true))
                     1 -> fetchMatches(viewModel, getCurrentDate())
-                    2 -> fetchMatches(viewModel, "2023-08-09")
+                    2 -> null //fetchMatches(viewModel, "2023-08-09")
                 }
             }
             if (isLoading) {
@@ -91,7 +91,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
 @Composable
 fun fetchMatches(viewModel: MainViewModel, currentDate: String) {
     LaunchedEffect(Unit) {
-        viewModel.fetchMatches()
+        viewModel.fetchMatches(currentDate)
     }
 }
 
