@@ -14,7 +14,7 @@ class MatchDetailViewModel: ViewModel()  {
     private val _match = MutableLiveData<MatchItem>()
     val match: LiveData<MatchItem> = _match
     val isLoading = MutableLiveData(false)
-    val isLoadingOpponents = MutableLiveData(false)
+        private val isLoadingOpponents = MutableLiveData(false)
 
     private val _opponents = MutableLiveData<OpponentXX>()
     val opponents: LiveData<OpponentXX> = _opponents

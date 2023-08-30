@@ -50,15 +50,11 @@ fun MatchListItem(
             Box(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-//                    .background(if (matchItem.status == "running") Color.Red else Color.DarkGray)
             ){
                 Row{
-                    if (matchItem.status != "running")
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            Text(convertUtcToLocalDate(matchItem.begin_at).toString(), color = Color.White)
-                        }
-                    else
-                        Text(color = Color.White, text = "LIVE")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Text(convertUtcToLocalDate(matchItem.begin_at))
+                    }
                 }
             }
             Box(
@@ -92,7 +88,6 @@ fun MatchListItem(
                                         text = it,
                                         modifier = Modifier.padding(all = 8.dp).fillMaxWidth(),
                                         fontSize = 14.sp,
-                                        color = Color.White,
                                         textAlign = TextAlign.Center,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis
@@ -125,7 +120,6 @@ fun MatchListItem(
                                         text = it,
                                         modifier = Modifier.padding(all = 8.dp).fillMaxWidth(),
                                         fontSize = 14.sp,
-                                        color = Color.White,
                                         textAlign = TextAlign.Center,
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis

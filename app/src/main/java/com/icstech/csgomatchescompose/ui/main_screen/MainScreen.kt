@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -31,18 +33,12 @@ import androidx.navigation.NavHostController
 import com.icstech.csgomatchescompose.data.MatchItem
 import com.icstech.csgomatchescompose.util.getCurrentDate
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
-    val pagerState = rememberPagerState()
-    val coroutineScope = rememberCoroutineScope()
-    var tabIndex by remember { mutableStateOf(1) }
-    val tabs = listOf("Yesterday", "TODAY", "Select a date")
-
     val matches by viewModel.matches.observeAsState(emptyList())
     val isLoading by viewModel.isLoading.observeAsState(false)
 
-    fetchMatches(viewModel, getCurrentDate(true))
+    fetchMatches(viewModel, getCurrentDate())
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
@@ -51,25 +47,8 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row (Modifier.padding(15.dp)){
+                Row (Modifier.padding(top = 20.dp, start = 15.dp)){
                     Text(text = "CSGOMatches")
-                }
-            }
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                TabRow(selectedTabIndex = tabIndex) {
-                    tabs.forEachIndexed { index, title ->
-                        Tab(text = { Text(title) },
-                            selected = tabIndex == index,
-                            onClick = { tabIndex = index }
-                        )
-                    }
-                }
-                when (tabIndex) {
-                    0 -> fetchMatches(viewModel, getCurrentDate(isYesterdaySelected = true))
-                    1 -> fetchMatches(viewModel, getCurrentDate())
-                    2 -> null //fetchMatches(viewModel, "2023-08-09")
                 }
             }
             if (isLoading) {
@@ -82,6 +61,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
                     CircularProgressIndicator()
                 }
             } else {
+                Spacer(modifier = Modifier.height(15.dp))
                 MountList(matches, navController)
             }
         }
