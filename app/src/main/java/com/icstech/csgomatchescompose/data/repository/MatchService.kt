@@ -8,7 +8,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MatchService {
-    @GET("/matches?sort=begin_at&sort=status")
+    @GET("/matches")
     suspend fun getMatches(@Query("filter[begin_at]") currentDate: String?): List<MatchItem>
 
     @GET("/matches/{matchId}")

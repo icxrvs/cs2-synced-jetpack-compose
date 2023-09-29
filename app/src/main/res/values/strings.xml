@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CSGOMatches</string>
-    <string name="matches">Partidas</string>
-    <string name="go_back">Voltar</string>
+    <string name="app_name">CS:GO Synced</string>
+    <string name="matches">Matches</string>
+    <string name="go_back">Back</string>
 </resources>

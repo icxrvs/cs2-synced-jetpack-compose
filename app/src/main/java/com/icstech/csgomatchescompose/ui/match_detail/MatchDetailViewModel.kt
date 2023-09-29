@@ -9,12 +9,12 @@ import com.icstech.csgomatchescompose.data.OpponentXX
 import com.icstech.csgomatchescompose.data.repository.MatchRepository
 import kotlinx.coroutines.launch
 
-class MatchDetailViewModel: ViewModel()  {
+class MatchDetailViewModel : ViewModel() {
     private val repository = MatchRepository()
     private val _match = MutableLiveData<MatchItem>()
     val match: LiveData<MatchItem> = _match
     val isLoading = MutableLiveData(false)
-        private val isLoadingOpponents = MutableLiveData(false)
+    val isLoadingOpponents = MutableLiveData(false)
 
     private val _opponents = MutableLiveData<OpponentXX>()
     val opponents: LiveData<OpponentXX> = _opponents
@@ -33,7 +33,7 @@ class MatchDetailViewModel: ViewModel()  {
         }
     }
 
-    fun fetchOpponents(matchId: String?){
+    fun fetchOpponents(matchId: String?) {
         isLoadingOpponents.value = true
         viewModelScope.launch {
             try {

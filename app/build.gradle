@@ -3,10 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
-def secretsProperties = new Properties()
-def secretsPropertiesFile = rootProject.file('secrets.properties')
-if (secretsPropertiesFile.exists()) {
-    secretsProperties.load(new FileInputStream(secretsPropertiesFile))
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
 }
 
 android {
@@ -37,7 +37,7 @@ android {
         }
 
         debug {
-            buildConfigField 'String', 'BEARER_TOKEN', "\"${secretsProperties['BEARER_TOKEN']}\""
+            buildConfigField 'String', 'BEARER_TOKEN', "\"${localProperties['BEARER_TOKEN']}\""
         }
     }
     compileOptions {
@@ -95,4 +95,5 @@ dependencies {
 
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
 
+    implementation "com.jakewharton.threetenabp:threetenabp:1.3.1"
 }

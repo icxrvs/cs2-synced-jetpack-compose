@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -34,8 +35,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -52,6 +57,7 @@ fun MatchDetailScreen(
 ) {
     val match by matchDetailViewModel.match.observeAsState(initial = null)
     val isLoading by matchDetailViewModel.isLoading.observeAsState(false)
+    val isLoadingOpponents by matchDetailViewModel.isLoadingOpponents.observeAsState(false)
     val opponents by matchDetailViewModel.opponents.observeAsState(initial = null)
 
     LaunchedEffect(Unit) {
@@ -75,96 +81,109 @@ fun MatchDetailScreen(
             Spacer(modifier = Modifier.width(8.dp))
 
             match?.opponents?.let{
-                Text("${match?.opponents?.get(0)?.opponent?.name} X ${match?.opponents?.get(1)?.opponent?.name}")
+                Text("${match?.opponents?.get(0)?.opponent?.name} X ${match?.opponents?.get(1)?.opponent?.name}", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp, maxLines = 2,  overflow = TextOverflow.Ellipsis)
             }
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                AsyncImage(
-                    model = match?.opponents?.get(0)?.opponent?.image_url,
-                    contentDescription = "",
-                    modifier = Modifier.size(60.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "VS")
-            Spacer(modifier = Modifier.width(8.dp))
-            Column{
-                AsyncImage(
-                    model = match?.opponents?.get(1)?.opponent?.image_url,
-                    contentDescription = "",
-                    modifier = Modifier.size(60.dp)
-                )
-
-            }
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Column(
-            modifier = Modifier
-                .align(CenterHorizontally)
-        ) {
-            match?.begin_at?.let { Text(convertUtcToLocalDate(it)) }
-        }
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        Column(
-            Modifier
-                .align(CenterHorizontally)
-        ) {
-            Text("${match?.league?.name} ${match?.serie?.name}")
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(space = 24.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
+        if (isLoadingOpponents) {
+            Box(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(top = 15.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(space = 24.dp)
+                CircularProgressIndicator()
+            }
+        }else{
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    AsyncImage(
+                        model = match?.opponents?.get(0)?.opponent?.image_url,
+                        contentDescription = "",
+                        modifier = Modifier.size(60.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "VS")
+                Spacer(modifier = Modifier.width(8.dp))
+                Column{
+                    AsyncImage(
+                        model = match?.opponents?.get(1)?.opponent?.image_url,
+                        contentDescription = "",
+                        modifier = Modifier.size(60.dp)
+                    )
+
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Column(
+                modifier = Modifier
+                    .align(CenterHorizontally)
+            ) {
+                match?.begin_at?.let { Text(convertUtcToLocalDate(it)) }
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Column(
+                Modifier
+                    .align(CenterHorizontally)
+            ) {
+                Text("${match?.league?.name} ${match?.serie?.name}")
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(space = 24.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 15.dp)
                 ) {
-                    opponents?.opponents?.get(0)?.let {
-                        items(it.players) { item ->
-                            opponentsLeft(
-                                player = item,
-                            )
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(space = 24.dp)
+                    ) {
+                        opponents?.opponents?.get(0)?.let {
+                            items(it.players) { item ->
+                                opponentsLeft(
+                                    player = item,
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(top = 15.dp)
+                ) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(space = 24.dp)
+                    ) {
+                        opponents?.opponents?.get(1)?.let {
+                            items(it.players) { item ->
+                                opponentsRight(
+                                    player = item,
+
+                                    )
+                            }
                         }
                     }
                 }
             }
-
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 15.dp)
-            ) {
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(space = 24.dp)
-                ) {
-                    opponents?.opponents?.get(1)?.let {
-                        items(it.players) { item ->
-                            opponentsRight(
-                                player = item,
-
-                            )
-                        }
-                    }
-                }
-            }
         }
+
 
     }
 }
@@ -184,14 +203,19 @@ private fun opponentsLeft(
                 modifier = Modifier
                     .size(150.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .background(Color(0xFFC4C4C4))
+                    .background(Color(0xFFC4C4C4)),
+                contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = player.image_url,
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
+                if (player.image_url != null) {
+                    AsyncImage(
+                        model = player.image_url,
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Text("No image", textAlign = TextAlign.Center)
+                }
             }
             Text(player.name)
         }
@@ -214,14 +238,19 @@ private fun opponentsRight(
                 modifier = Modifier
                     .size(150.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .background(Color(0xFFC4C4C4))
+                    .background(Color(0xFFC4C4C4)),
+                contentAlignment = Alignment.Center
             ) {
-                AsyncImage(
-                    model = player.image_url,
-                    contentDescription = "",
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
+                if (player.image_url != null) {
+                    AsyncImage(
+                        model = player.image_url,
+                        contentDescription = "",
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
+                    )
+                } else {
+                    Text("No image", textAlign = TextAlign.Center)
+                }
             }
             Text(player.name)
         }

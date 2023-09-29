@@ -1,5 +1,6 @@
 package com.icstech.csgomatchescompose.util
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
@@ -7,6 +8,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun convertUtcToLocalDate(utcString: String): String {
@@ -17,9 +19,16 @@ fun convertUtcToLocalDate(utcString: String): String {
 
 fun getCurrentDate(isYesterdaySelected: Boolean = false): String{
     val calendar = Calendar.getInstance()
-
-    if (isYesterdaySelected) calendar.add(Calendar.DAY_OF_YEAR, -1)
-
     val format = SimpleDateFormat("yyyy-MM-dd")
     return format.format(calendar.time)
 }
+
+
+@SuppressLint("NewApi")
+fun toUTCISOFormat(dateTime: String): String {
+    val localDateTime = ZonedDateTime.parse(dateTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault()))
+    val utcDateTime = localDateTime.withZoneSameInstant(ZoneId.of("UTC"))
+
+    return utcDateTime.format(DateTimeFormatter.ISO_INSTANT)
+}
+
